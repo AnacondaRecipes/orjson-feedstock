@@ -2,18 +2,10 @@
 
 set -ex
 
-# See https://github.com/conda-forge/rust-feedstock/blob/master/recipe/build.sh for cc env explanation
-
-if [ "$c_compiler" = gcc ] ; then
-    case "$BUILD" in
-        x86_64-*) rust_env_arch=X86_64_UNKNOWN_LINUX_GNU ;;
-        aarch64-*) rust_env_arch=AARCH64_UNKNOWN_LINUX_GNU ;;
-        powerpc64le-*) rust_env_arch=POWERPC64LE_UNKNOWN_LINUX_GNU ;;
-        *) echo "unknown BUILD $BUILD" ; exit 1 ;;
-    esac
-
-    export CARGO_TARGET_${rust_env_arch}_LINKER=$CC
-fi
+# Set up rust environment
+export CARGO_HOME=${CONDA_PREFIX}/.cargo.$(uname)
+export CARGO_CONFIG=${CARGO_HOME}/config
+export RUSTUP_HOME=${CARGO_HOME}/rustup
 
 declare -a _xtra_maturin_args
 _xtra_maturin_args+=(-Zfeatures=itarget)
