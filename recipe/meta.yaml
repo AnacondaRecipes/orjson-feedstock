@@ -11,6 +11,8 @@ source:
 
 build:
   number: 0
+  # maturin does not build on s390x
+  # osx-arm64 requires cross-compiling
   skip: true  # [py<37 or (osx and arm64) or s390x]
 
 requirements:
