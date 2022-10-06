@@ -1,3 +1,5 @@
+# There is no gnu version of orjson on Windows
+# because the simdutf8 does not get properly linked
 {% set name = "orjson" %}
 {% set version = "3.7.8" %}
 
@@ -11,15 +13,12 @@ source:
 
 build:
   number: 0
-  # maturin does not build on s390x
-  # osx-arm64 requires cross-compiling
   skip: true  # [py<37 or (osx and arm64) or s390x]
 
 requirements:
   build:
-    - {{ compiler('rust') }}
-    - {{ compiler('c') }}                 # [not win]
-    - posix                               # [win]
+    - rust_win-64
+    - {{ compiler('c') }}
     - cargo-bundle-licenses
     - maturin >=0.13,<0.14
   host:
