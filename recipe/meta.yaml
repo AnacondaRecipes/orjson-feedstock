@@ -25,6 +25,7 @@ requirements:
     - python
     - pip
     - toml
+    - wheel
   run:
     - python
 
