@@ -17,7 +17,8 @@ build:
 
 requirements:
   build:
-    - rust_win-64
+    - rust_win-64  # [win]
+    - {{ compiler('rust') }}  # [not win]
     - {{ compiler('c') }}
     - cargo-bundle-licenses
     - maturin >=0.13,<0.14
