@@ -33,6 +33,8 @@ requirements:
 test:
   imports:
     - orjson
+  requires:
+    - pip
   commands:
     - pip check
 
