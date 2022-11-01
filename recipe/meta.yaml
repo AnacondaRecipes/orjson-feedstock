@@ -21,8 +21,8 @@ requirements:
     - {{ compiler('rust') }}  # [not win]
     - {{ compiler('c') }}
     - cargo-bundle-licenses
-    - maturin >=0.13,<0.14
   host:
+    - maturin >=0.13,<0.14
     - python
     - pip
     - toml
