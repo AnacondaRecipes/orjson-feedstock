@@ -31,6 +31,8 @@ requirements:
 test:
   imports:
     - orjson
+  commands:
+    - pip check
 
 about:
   home: https://github.com/ijl/orjson
