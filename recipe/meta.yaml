@@ -52,7 +52,6 @@ about:
     library for JSON and is more correct than the standard json library or other third-party
     libraries. It serializes dataclass, datetime, numpy, and UUID instances natively.
   doc_url: https://github.com/ijl/orjson
-  doc_source_url: https://github.com/ijl/orjson/blob/{{ version }}/README.md
   dev_url: https://github.com/ijl/orjson
 
 extra:
