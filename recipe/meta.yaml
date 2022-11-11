@@ -1,52 +1,42 @@
+# There is no gnu version of orjson on Windows
+# because the simdutf8 does not get properly linked
 {% set name = "orjson" %}
-{% set version = "3.6.7" %}
-{% set rust_nightly_version = "2022-01-17" %}
+{% set version = "3.7.8" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: a4bb62b11289b7620eead2f25695212e9ac77fcfba76f050fa8a540fb5c32401
-  - url: https://static.rust-lang.org/dist/{{ rust_nightly_version }}/rust-nightly-x86_64-unknown-linux-gnu.tar.gz  # [linux64]
-    sha256: 63f367a71b034129ca2fd68c19c977c25aa6eca2acce7369142b1b6d1c3c9cba  # [linux64]
-  - url: https://static.rust-lang.org/dist/{{ rust_nightly_version }}/rust-nightly-powerpc64le-unknown-linux-gnu.tar.gz  # [ppc64le]
-    sha256: eb4a8c5fb49861d9213bedfb4660595dfacbf0111675950430cda17206e6491a  # [ppc64le]
-  - url: https://static.rust-lang.org/dist/{{ rust_nightly_version }}/rust-nightly-aarch64-unknown-linux-gnu.tar.gz  # [aarch64]
-    sha256: 43e8ad5eacd808e3732f2f9cc33c74f1a87a7131f54a74fbca17992b6ba46ac4  # [aarch64]
-  - url: https://static.rust-lang.org/dist/{{ rust_nightly_version }}/rust-nightly-x86_64-apple-darwin.tar.gz  # [osx]
-    sha256: 61ba1b8ad9114fede3592f11d5b1908d4af66ca5acf9bcaf355a66d616980e4c  # [osx]
-  - url: https://static.rust-lang.org/dist/{{ rust_nightly_version }}/rust-nightly-x86_64-pc-windows-msvc.tar.xz  # [win]
-    sha256: 3ca479004411e64657925b4fcc12ab5bbe005e529d02c5eaa99f91fa7b4344d5  # [win]
-    folder: rust-nightly
-  - url: https://static.rust-lang.org/dist/{{ rust_nightly_version }}/rust-nightly-aarch64-apple-darwin.tar.gz  # [target_platform == 'osx-arm64']
-    sha256: 84c0256ddb338fda93092e076cf168faff17c20c865cbe116bf1f90c443325e5  # [target_platform == 'osx-arm64']
-    folder: rust-nightly-aarch64-apple-darwin  # [target_platform == 'osx-arm64']
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: a2e824220245323bb3291bb10ccf2ba936ed0b14e5e4a6260a1d1ed048caf77e
 
 build:
   number: 0
-  skip: true  # [py<37]
+  skip: true  # [py<37 or (osx and arm64) or s390x]
 
 requirements:
   build:
-    - python                              # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
-    - crossenv 1.0                        # [build_platform != target_platform]
-    - {{ compiler('c') }}                 # [not win]
-    - posix                               # [win]
+    - rust_win-64  # [win]
+    - {{ compiler('rust') }}  # [not win]
+    - {{ compiler('c') }}
     - cargo-bundle-licenses
   host:
+    - maturin >=0.13,<0.14
     - python
     - pip
-    - maturin >=0.12.6,<0.13
     - toml
+    - wheel
   run:
     - python
 
 test:
   imports:
     - orjson
+  requires:
+    - pip
+  commands:
+    - pip check
 
 about:
   home: https://github.com/ijl/orjson
@@ -57,7 +47,11 @@ about:
     - LICENSE-MIT
     - THIRDPARTY.yml
   summary: orjson is a fast, correct JSON library for Python.
-  doc_url: https://github.com/ijl/orjson
+  description: |
+    orjson is a fast, correct JSON library for Python. It benchmarks as the fastest Python
+    library for JSON and is more correct than the standard json library or other third-party
+    libraries. It serializes dataclass, datetime, numpy, and UUID instances natively.
+  doc_url: https://github.com/ijl/orjson/blob/{{ version }}/README.md
   dev_url: https://github.com/ijl/orjson
 
 extra:
