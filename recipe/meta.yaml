@@ -14,8 +14,8 @@ source:
 build:
   number: 0
   skip: true  # [py<38]
-  missing_dso_whitelist:
-    - '$RPATH/ld64.so.1'
+  missing_dso_whitelist:  # [s390x]
+    - '$RPATH/ld64.so.1'  # [s390x]
 
 requirements:
   build:
