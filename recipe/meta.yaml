@@ -1,7 +1,7 @@
 # There is no gnu version of orjson on Windows
 # because the simdutf8 does not get properly linked
 {% set name = "orjson" %}
-{% set version = "3.8.8" %}
+{% set version = "3.9.10" %}
 
 package:
   name: {{ name|lower }}
@@ -9,11 +9,13 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: c096d7a523bae6ffb9c4a228ba4691d66113f0f2231579dc945523fbef09c6da
+  sha256: 9ebbdbd6a046c304b1845e96fbcc5559cd296b4dfd3ad2509e33c4d9ce07d6a1
 
 build:
   number: 0
-  skip: true  # [py<37 or s390x]
+  skip: true  # [py<38]
+  missing_dso_whitelist:  # [s390x]
+    - '$RPATH/ld64.so.1'  # [s390x]
 
 requirements:
   build:
@@ -22,11 +24,9 @@ requirements:
     - {{ compiler('c') }}
     - cargo-bundle-licenses
   host:
-    - maturin >=0.13,<2
+    - maturin >=1,<2
     - python
     - pip
-    - toml
-    - wheel
   run:
     - python
 
