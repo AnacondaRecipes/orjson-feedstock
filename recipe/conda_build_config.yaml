@@ -1,5 +1,6 @@
+# Rust version requirement in upstream README.md
 rust_compiler_version:
-  - 1.64.0
+  - 1.76.0
 # orjson has wheels only for MacOS SDK 11.0, see https://pypi.org/project/orjson/3.8.8/#files
 MACOSX_DEPLOYMENT_TARGET:
   - 11.0  # [osx and arm64]
