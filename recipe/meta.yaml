@@ -1,7 +1,7 @@
 # There is no gnu version of orjson on Windows
 # because the simdutf8 does not get properly linked
 {% set name = "orjson" %}
-{% set version = "3.9.15" %}
+{% set version = "3.10.7" %}
 
 package:
   name: {{ name|lower }}
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 95cae920959d772f30ab36d3b25f83bb0f3be671e986c72ce22f8fa700dae061
+  sha256: 75ef0640403f945f3a1f9f6400686560dbfb0fb5b16589ad62cd477043c4eee3
 
 build:
   number: 0
