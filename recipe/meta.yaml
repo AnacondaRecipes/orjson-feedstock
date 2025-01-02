@@ -12,7 +12,7 @@ source:
   sha256: 75ef0640403f945f3a1f9f6400686560dbfb0fb5b16589ad62cd477043c4eee3
 
 build:
-  number: 0
+  number: 1
   skip: true  # [py<38]
   missing_dso_whitelist:  # [s390x]
     - '$RPATH/ld64.so.1'  # [s390x]
