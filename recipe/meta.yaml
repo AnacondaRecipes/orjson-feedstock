@@ -1,5 +1,5 @@
 {% set name = "orjson" %}
-{% set version = "3.10.14" %}
+{% set version = "3.11.4" %}
 
 package:
   name: {{ name|lower }}
@@ -7,23 +7,26 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: cf31f6f071a6b8e7aa1ead1fa27b935b48d00fbfa6a28ce856cfff2d5dd68eed
+  sha256: 39485f4ab4c9b30a3943cfe99e1a213c4776fb69e8abd68f66b83d5a0b0fdc6d
 
 build:
   number: 0
-  skip: true  # [py<38]
-  missing_dso_whitelist:  # [s390x]
-    - '$RPATH/ld64.so.1'  # [s390x]
+  skip: true  # [py<39]
   script:
     - {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --disable-pip-version-check
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 requirements:
   build:
+    # https://github.com/ijl/orjson/blob/master/CHANGELOG.md#3112---2025-08-12 says 
+    # the minimum rust build version is 1.85
     - {{ compiler('rust') }}
+    # Limit clang to the version rust was built against.
     - {{ compiler('c') }}
+    - {{ stdlib('c') }}
     - cargo-bundle-licenses
   host:
+    # https://github.com/ijl/orjson/blob/master/CHANGELOG.md#changed-7
     - maturin >=1,<2
     - python
     - pip
@@ -31,22 +34,27 @@ requirements:
     - python
 
 test:
+  source_files:
+    - test
   imports:
     - orjson
   requires:
     - pip
     - mypy
+    - pytest
   commands:
     - pip check
     - mypy -m orjson
+    - pytest -v test
 
 about:
   home: https://github.com/ijl/orjson
-  license: Apache-2.0
-  license_family: Apache
+  license: Apache-2.0 OR MIT
+  license_family: OTHER
   license_file:
     - LICENSE-APACHE
     - LICENSE-MIT
+    # Collected from cargo during the build
     - THIRDPARTY.yml
   summary: orjson is a fast, correct JSON library for Python.
   description: |
