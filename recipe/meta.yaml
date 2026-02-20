@@ -18,10 +18,7 @@ build:
 
 requirements:
   build:
-    # https://github.com/ijl/orjson/blob/master/CHANGELOG.md#3112---2025-08-12 says
-    # the minimum rust build version is 1.85
     - {{ compiler('rust') }}
-    # Limit clang to the version rust was built against.
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - cargo-bundle-licenses
