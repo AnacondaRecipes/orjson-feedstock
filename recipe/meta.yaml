@@ -1,32 +1,28 @@
 {% set name = "orjson" %}
-{% set version = "3.11.4" %}
+{% set version = "3.11.7" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 39485f4ab4c9b30a3943cfe99e1a213c4776fb69e8abd68f66b83d5a0b0fdc6d
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 9b1a67243945819ce55d24a30b59d6a168e86220452d2c96f4d1f093e71c0c49
 
 build:
-  number: 1
-  skip: true  # [py<39]
+  number: 0
+  skip: true  # [py<310]
   script:
     - {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --disable-pip-version-check
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 requirements:
   build:
-    # https://github.com/ijl/orjson/blob/master/CHANGELOG.md#3112---2025-08-12 says 
-    # the minimum rust build version is 1.85
     - {{ compiler('rust') }}
-    # Limit clang to the version rust was built against.
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - cargo-bundle-licenses
   host:
-    # https://github.com/ijl/orjson/blob/master/CHANGELOG.md#changed-7
     - maturin >=1,<2
     - python
     - pip
@@ -41,7 +37,7 @@ test:
   requires:
     - pip
     - mypy
-    - pytest
+    - pytest >=9.0
   commands:
     - pip check
     - mypy -m orjson
@@ -49,7 +45,7 @@ test:
 
 about:
   home: https://github.com/ijl/orjson
-  license: Apache-2.0 OR MIT
+  license: MPL-2.0 AND (Apache-2.0 OR MIT)
   license_family: OTHER
   license_file:
     - LICENSE-APACHE
