@@ -23,7 +23,6 @@ requirements:
     - {{ stdlib('c') }}
     - cargo-bundle-licenses
   host:
-    # https://github.com/ijl/orjson/blob/master/CHANGELOG.md#changed-7
     - maturin >=1,<2
     - python
     - pip
@@ -38,7 +37,7 @@ test:
   requires:
     - pip
     - mypy
-    - pytest
+    - pytest >=9.0
   commands:
     - pip check
     - mypy -m orjson
@@ -46,7 +45,7 @@ test:
 
 about:
   home: https://github.com/ijl/orjson
-  license: Apache-2.0 OR MIT
+  license: MPL-2.0 AND (Apache-2.0 OR MIT)
   license_family: OTHER
   license_file:
     - LICENSE-APACHE
